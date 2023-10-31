@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="grid" id="grid">
+      
+        <div class="button" id="button" draggable="true">1</div>
+
+        <script>
+            let number = 2; 
+            for (let row = 1; row <= 10; row++) {
+                for (let col = 1; col <= 10; col++) {
+                    const cell = document.createElement("div");
+                    cell.classList.add("grid-item");
+                    cell.textContent = number;
+                    document.getElementById("grid").appendChild(cell);
+                    number++;
+                }
+            }
+        </script>
+    </div>
+
+    <script>
+        const grid = document.querySelector(".grid");
+        const button = document.getElementById("button");
+        let isDragging = false;
+        let initialX, initialY;
+        let isResizing = false;
+        let startColumn, startRow;
+        let originalWidth = 1;
+        let originalHeight = 1;
+
+        button.addEventListener("mousedown", (e) => {
+            if (e.target === button) {
+                if (e.offsetX <= 5 && e.offsetY <= 5) {
+                    isResizing = true;
+                    startColumn = parseInt(button.style.gridColumnStart);
+                    startRow = parseInt(button.style.gridRowStart);
+                    originalWidth = parseInt(button.style.gridColumnEnd) - startColumn + 1;
+                    originalHeight = parseInt(button.style.gridRowEnd) - startRow + 1;
+                } else {
+                    isDragging = true;
+                    initialX = e.clientX;
+                    initialY = e.clientY;
+                }
+                button.style.zIndex = "3";
+            }
+        });
+
+        button.addEventListener("mouseup", () => {
+            isDragging = false;
+            isResizing = false;
+            button.style.zIndex = "2";
+        });
+
+        grid.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                const gridCellWidth = grid.offsetWidth / 10;
+                const gridCellHeight = grid.offsetHeight / 10;
+
+                const column = Math.min(10, Math.max(1, Math.floor(e.clientX / gridCellWidth)));
+                const row = Math.min(10, Math.max(1, Math.floor(e.clientY / gridCellHeight)));
+
+                button.style.gridColumnStart = column;
+                button.style.gridRowStart = row;
+                button.style.gridColumnEnd = column + originalWidth;
+                button.style.gridRowEnd = row + originalHeight;
+            }
+
+            if (isResizing) {
+                const gridCellWidth = grid.offsetWidth / 10;
+                const gridCellHeight = grid.offsetHeight / 10;
+
+                const newWidth = Math.min(10, Math.max(1, Math.floor(e.clientX / gridCellWidth))) - startColumn + 1;
+                const newHeight = Math.min(10, Math.max(1, Math.floor(e.clientY / gridCellHeight))) - startRow + 1;
+
+                button.style.gridColumnEnd = startColumn + newWidth;
+                button.style.gridRowEnd = startRow + newHeight;
+            }
+        });
+    </script>
+</body>
+</html>
