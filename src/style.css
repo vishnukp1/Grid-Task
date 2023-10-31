@@ -1,0 +1,28 @@
+/* Define the grid styles */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 500px;
+    height: 500px;
+    gap: 2px;
+}
+
+/* Define button styles */
+#button {
+    grid-column: 1;
+    grid-row: 1;
+    width: 1fr; /* 1 column wide */
+    height: 1fr; /* 1 row high */
+    background-color: #3498db;
+    cursor: pointer;
+}
+
+/* Define number styles */
+.number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ccc;
+}
+
