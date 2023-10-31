@@ -48,11 +48,13 @@
             let number = 2; 
             for (let row = 1; row <= 10; row++) {
                 for (let col = 1; col <= 10; col++) {
+                    if(number<101){
                     const cell = document.createElement("div");
                     cell.classList.add("grid-item");
                     cell.textContent = number;
                     document.getElementById("grid").appendChild(cell);
                     number++;
+                }
                 }
             }
         </script>
