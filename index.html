@@ -20,17 +20,12 @@
       }
 
       .button {
-        grid-column: span 1;
-        grid-row: span 1;
         background-color: rgb(238, 69, 69);
         color: #fff9f9;
-        cursor: pointer;
         position: relative;
         z-index: 2;
         width: 1fr;
         height: 1fr;
-        resize: both;
-        overflow: hidden;
       }
     </style>
   </head>
@@ -58,29 +53,27 @@
       const grid = document.querySelector(".grid");
       const button = document.getElementById("button");
       let isDragging = false;
-      let initialX, initialY;
       let isResizing = false;
-      let startColumn, startRow;
-      let originalWidth = 1;
-      let originalHeight = 1;
 
       button.addEventListener("mousedown", (e) => {
         if (e.target === button) {
-          if (e.offsetX <= 5 && e.offsetY <= 5) {
-            isResizing = true;
-          } else {
-            isDragging = true;
-            initialX = e.clientX;
-            initialY = e.clientY;
-          }
-          button.style.zIndex = "3";
+          isDragging = true;
         }
       });
 
       button.addEventListener("mouseup", () => {
         isDragging = false;
-        isResizing = false;
-        button.style.zIndex = "2";
+      });
+      button.addEventListener("dblclick", (e) => {
+        if (e.target === button) {
+          isResizing = true;
+        }
+      });
+
+      button.addEventListener("click", (e) => {
+        if (e.target === button) {
+          isResizing = false;
+        }
       });
 
       grid.addEventListener("mousemove", (e) => {
@@ -99,25 +92,20 @@
 
           button.style.gridColumnStart = column;
           button.style.gridRowStart = row;
-          button.style.gridColumnEnd = column + originalWidth;
-          button.style.gridRowEnd = row + originalHeight;
+          button.style.gridColumnEnd = column + 1;
+          button.style.gridRowEnd = row + 1;
         }
-
         if (isResizing) {
-          const gridCellWidth = grid.offsetWidth / 10;
-          const gridCellHeight = grid.offsetHeight / 10;
-
-          const newWidth =
-            Math.min(10, Math.max(1, Math.floor(e.clientX / gridCellWidth))) -
-            startColumn +
-            1;
-          const newHeight =
-            Math.min(10, Math.max(1, Math.floor(e.clientY / gridCellHeight))) -
-            startRow +
-            1;
-
-          button.style.gridColumnEnd = startColumn + newWidth;
-          button.style.gridRowEnd = startRow + newHeight;
+          const width = Math.min(
+            10,
+            Math.max(1, Math.floor(e.clientX / (grid.offsetWidth / 10)) + 1)
+          );
+          const height = Math.min(
+            10,
+            Math.max(1, Math.floor(e.clientY / (grid.offsetHeight / 10)) + 1)
+          );
+          button.style.gridColumn = `auto / span ${width}`;
+          button.style.gridRow = `auto / span ${height}`;
         }
       });
     </script>
