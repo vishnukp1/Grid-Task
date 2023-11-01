@@ -25,8 +25,6 @@
             grid-row: span 1;
             background-color: rgb(238, 69, 69);
             color: #fff9f9;
-         
-    
             cursor: pointer;
             position: relative;
             z-index: 2;
@@ -72,10 +70,8 @@
             if (e.target === button) {
                 if (e.offsetX <= 5 && e.offsetY <= 5) {
                     isResizing = true;
-                    startColumn = parseInt(button.style.gridColumnStart);
-                    startRow = parseInt(button.style.gridRowStart);
-                    originalWidth = parseInt(button.style.gridColumnEnd) - startColumn + 1;
-                    originalHeight = parseInt(button.style.gridRowEnd) - startRow + 1;
+               
+              
                 } else {
                     isDragging = true;
                     initialX = e.clientX;
@@ -84,7 +80,7 @@
                 button.style.zIndex = "3";
             }
         });
-
+   
         button.addEventListener("mouseup", () => {
             isDragging = false;
             isResizing = false;
